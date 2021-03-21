@@ -1,0 +1,91 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    allLinks(filter: LinkFilter, skip: Int = 0, first: Int = 0): [Link]
+    allCustomers(filter: CustomerFilter): [Customer]
+    oneCustomer(filter: CustomerFilter): Customer
+}
+
+type Mutation {
+    createLink(url: String!, description: String!): Link
+    createUser(name: String!, authProvider: AuthData!): User
+    signinUser(auth: AuthData): SigninPayload
+    createVote(linkId: ID, userId: ID): Vote
+    createCustomer(dob: String, emailId: String, firstName: String, lastName: String, mobile: String): Customer
+    
+}
+
+type Link {
+    id: ID!
+    url: String!
+    description: String
+    postedBy: User
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String
+    password: String
+}
+
+type SigninPayload {
+    token: String
+    user: User
+}
+
+type Vote {
+    id: ID!
+    createdAt: DateTime!
+    user: User!
+    link: Link!
+}
+
+type Order{
+	id: ID!
+	state: String
+	brewState: String
+	coffeeType: String
+	beanOrigin: String
+	date: String	
+}
+
+type Customer{
+	id: ID!
+	dob: String
+	emailId: String
+	firstName: String
+	lastName: String
+	mobile: String
+}
+
+type Country{
+	id: ID!
+	name: String
+}
+
+type CoffeeType{
+    id: ID!
+    name: String
+}
+
+input AuthData {
+    email: String!
+    password: String!
+}
+
+input LinkFilter {
+    description_contains: String
+    url_contains: String
+}
+
+input CustomerFilter {
+    firstname_contains: String
+    lastname_contains: String
+    customerId: String
+}
+
+scalar DateTime
